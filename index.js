@@ -31,8 +31,10 @@ client.on("message", async msg => {
     await page.goto(`https://www.astrology.com/horoscope/daily/${sign}.html`);
     let data = await page.$(".main-content > p:nth-child(3)");
     let text = await page.evaluate(t => t.textContent, data);
-    // add embed
-    msg.channel.send(text);
+    let embed = new Discord.RichEmbed()
+      .addField(sign.toUpperCase(), text)
+      .setFooter(new Date().toUTCString());
+    msg.channel.send({ embed });
     browser.close();
   }
 });
